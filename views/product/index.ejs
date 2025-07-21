@@ -1,0 +1,193 @@
+<%- include('../partials/header.ejs') -%>
+
+    <div class="container">
+        <div class="p-2">
+            <h1>Add Product</h1>
+            <!-- addhere -->
+            <form class="needs-validation" id="form" novalidate method="POST" action="/product/add"
+                enctype="multipart/form-data">
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom01">Product Name</label>
+                        <input type="text" class="form-control" id="title" name="product_name"
+                            placeholder="Enter Product Name">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom02">Brand Name</label>
+                        <input type="text" class="form-control" id="publisher" name="brand_name"
+                            placeholder="Enter Brand Name">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom02">Product Type</label>
+                        <select name="type">
+                            <option selected>Free</option>
+                            <option>Paid</option>
+                        </select>
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom02">Product Price</label>
+                        <input type="number" class="form-control" placeholder="Enter Product price" value="0"
+                            name="price" id="pprice" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="validationCustom02">Upload Product image</label>
+                        <input class="form-control" type="file" name="image" id="pimage"
+                            placeholder="Enter Product Image" required>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row p-2">
+                    <input class="btn btn-primary" id="update" type="submit" />
+                </div>
+            </form>
+
+            <!-- <script>
+                // Example starter JavaScript for disabling form submissions if there are invalid fields
+                (function () {
+                    'use strict';
+                    window.addEventListener('load', function () {
+                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                        var forms = document.getElementsByClassName('needs-validation');
+                        // Loop over them and prevent submission
+                        var validation = Array.prototype.filter.call(forms, function (form) {
+                            form.addEventListener('submit', function (event) {
+                                if (form.checkValidity() === false) {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                }
+                                form.classList.add('was-validated');
+                            }, false);
+                        });
+                    }, false);
+                })();
+            </script> -->
+            <!-- end  -->
+            <!-- <form method="POST" action="/product/add" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="form-label">Product Name</label>
+                            <input id="title" class="form-control" type="text" name="product_name"
+                                placeholder="Enter Product Name" />
+                        </div>
+
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="form-label">Brand Name</label>
+                            <input id="publisher" class="form-control" type="text" name="brand_name"
+                                placeholder="Enter Brand Name" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="form-label">Product Type</label> <br />
+                            <select name="type">
+                                <option selected>Free</option>
+                                <option>Paid</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="form-label">Product rice</label>
+                            <input class="form-control" type="number" value="0" name="price"
+                                placeholder="Enter Product price" />
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="form-label">Upload Product Image</label>
+                            <input class="form-control" type="file" name="image" placeholder="Enter Product Image" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row p-2">
+                    <input class="btn btn-primary" id="update" type="submit" />
+                </div>
+            </form> -->
+
+            <table id="music-table" class="table">
+                <thead>
+                    <td>Id</td>
+                    <td>Title</td>
+                    <td>Publisher</td>
+                    <td>Price</td>
+                    <td>Type</td>
+                    <td>Image</td>
+                    <td>Actions</td>
+                </thead>
+                <tbody>
+                    <% for (const p of products) { %>
+                        <tr>
+                            <td><%- p._id -%></td>
+                            <td><%- p.product_name -%></td>
+                            <td><%- p.brand_name -%></td>
+                            <td><%- p.price -%></td>
+                            <td><%- p.type -%></td>
+                            <td><img width="100px" height="100px" src='uploads/productimages/<%- p.image -%>' /></td>
+                            <td>
+                                <a class="btn btn-primary text-white" href="#" onclick="Edit('<%-p._id-%>')">Edit </a>
+                                |
+                                <a href="/product/delete?id=<%-p._id-%>" class="btn btn-danger text-white">Delete </a>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function Edit(id) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", `/product/read/${id}`, true);
+            xhttp.send();
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    let res = JSON.parse(xhttp.responseText);
+                    document.getElementById("title").value = res['product_name'];
+                    document.getElementById("publisher").value = res['brand_name'];
+                    document.getElementById("pprice").value = res['price'];
+                    document.getElementById("pimage").value = res['image'];
+                    document.getElementById("update").value = "Update";
+                    document.getElementById("form").setAttribute("action", `/product/update/${id}`);
+                }
+            }
+        }
+    </script>
